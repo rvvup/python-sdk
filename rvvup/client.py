@@ -3,7 +3,8 @@ import logging
 from typing import Dict, Any, Optional
 import json
 from openapi.rvvup import AuthenticatedClient
-from openapi.rvvup.api.webhooks import list_webhooks
+from openapi.rvvup.api.webhooks import list_webhooks, create_webhook
+from openapi.rvvup.models import WebhookCreateInput
 
 
 class RvvupClient:
@@ -453,6 +454,12 @@ class RvvupClient:
     def list_webhooks(self):
         result = list_webhooks.sync_detailed(
             self.merchant_id, client=self._rest_httpx_client()
+        )
+        return json.loads(result.content)
+
+    def create_webhook(self, webhook: WebhookCreateInput):
+        result = create_webhook.sync_detailed(
+            self.merchant_id, body=webhook, client=self._rest_httpx_client()
         )
         return json.loads(result.content)
 

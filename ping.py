@@ -1,5 +1,6 @@
-import jwt
 import os
+
+import jwt
 
 from rvvup import RvvupClient
 
