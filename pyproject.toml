@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "rvvup_python"
+version = "0.1.0"
+description = "Rvvup Python API Client"
+authors = ["Graham O'regan <graham@rvvup.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "rvvup"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.32.2"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+flake8 = "^7.0.0"
+pre-commit = "^3.7.1"
+openapi-python-client = "^0.20.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
