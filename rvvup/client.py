@@ -1,10 +1,17 @@
-import httpx
+import json
 import logging
 from typing import Dict, Any, Optional
-import json
+
+import httpx
+
 from openapi.rvvup import AuthenticatedClient
-from openapi.rvvup.api.webhooks import list_webhooks, create_webhook
-from openapi.rvvup.models import WebhookCreateInput
+from openapi.rvvup.api.webhooks import list_webhooks, create_webhook, update_webhook
+from openapi.rvvup.models import (
+    WebhookCreateInput,
+    WebhookUpdateInput,
+    WebhookEventType,
+    WebhookStatus,
+)
 
 
 class RvvupClient:
@@ -457,9 +464,46 @@ class RvvupClient:
         )
         return json.loads(result.content)
 
-    def create_webhook(self, webhook: WebhookCreateInput):
+    def create_webhook(
+        self, url: str, subscribed_events: list[str], headers: Dict[str, Any] = {}
+    ) -> Dict[str, Any]:
+
+        webhook = WebhookCreateInput(
+            headers=headers,
+            subscribed_events=subscribed_events,
+            url=url,
+        )
         result = create_webhook.sync_detailed(
-            self.merchant_id, body=webhook, client=self._rest_httpx_client()
+            self.merchant_id,
+            client=self._rest_httpx_client(),
+            body=webhook,
+        )
+        return json.loads(result.content)
+
+    def update_webhook(
+        self,
+        webhook_id: str,
+        url: str,
+        subscribed_events: list[str],
+        status: str,
+        headers: Dict[str, Any] = {},
+    ) -> Dict[str, Any]:
+
+        subscribed_events_enums = []
+        for subscribed_event in subscribed_events:
+            subscribed_events_enums.append(WebhookEventType(subscribed_event))
+
+        webhook = WebhookUpdateInput(
+            url=url,
+            headers=headers,
+            subscribed_events=subscribed_events_enums,
+            status=WebhookStatus(status),
+        )
+        result = update_webhook.sync_detailed(
+            self.merchant_id,
+            webhook_id,
+            client=self._rest_httpx_client(),
+            body=webhook,
         )
         return json.loads(result.content)
 
