@@ -1,5 +1,5 @@
+import httpx
 import logging
-import requests
 from typing import Dict, Any, Optional
 
 
@@ -24,7 +24,6 @@ class RvvupClient:
         self.user_agent = user_agent
         self.logger = logger or logging.getLogger(__name__)
         self.debug = debug
-        self.session = requests.Session()
 
     def get_methods(
         self,
@@ -338,11 +337,7 @@ class RvvupClient:
         }
         """
         response = self._do_request(query)
-        return (
-            "data" in response
-            and "ping" in response["data"]
-            and "pong" in response["data"]["ping"]
-        )
+        return f"{response['data']['ping']['pong']}"
 
     def register_webhook(self, url: str) -> None:
         query = """
@@ -458,7 +453,7 @@ class RvvupClient:
         headers = {
             "Content-Type": "application/json; charset=utf-8",
             "Accept": "application/json",
-            "Authorization": f"Basic {self.auth_token}",
+            "Authorization": f"Bearer {self.auth_token}",
             "User-Agent": self.user_agent,
         }
 
@@ -473,14 +468,15 @@ class RvvupClient:
         if input_options:
             options.update(input_options)
 
-        response = self.session.post(self.endpoint, **options)
-        response_data = response.json()
+        with httpx.Client() as client:
+            response = client.post(self.endpoint, **options)
+            response_data = response.json()
 
         debug_data = {
             "code": response.status_code,
             "requestHeaders": self._sanitise_request_headers(headers),
             "requestBody": self._sanitise_request_body(data),
-            "responseHeaders": response.headers,
+            "responseHeaders": dict(response.headers),
             "responseBody": response_data,
         }
 
@@ -500,15 +496,15 @@ class RvvupClient:
 
             return response_data
 
-        self._log("Unexpected HTTP response code", debug_data)
+        self._log(f"Unexpected HTTP response code {debug_data}", debug_data)
 
         if 500 <= response.status_code < 600:
             raise Exception(
-                "Network error returned via the API. Please use the same idempotency"
-                "key if you retry."
+                "Network error returned via the API. "
+                "Please use the same idempotency key if you retry."
             )
 
-        raise Exception("Unexpected HTTP response code")
+        raise Exception(f"Unexpected HTTP response code {debug_data}", debug_data)
 
     def _log(self, message: str, context: Dict[str, Any]) -> None:
         if self.logger:
