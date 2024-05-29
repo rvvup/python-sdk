@@ -3,12 +3,11 @@ from typing import Any, Dict, Optional, Union, cast
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.checkout_template import CheckoutTemplate
 from ...models.checkout_template_create_input import CheckoutTemplateCreateInput
+from ...types import Response
 
 
 def _get_kwargs(
@@ -20,9 +19,7 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": "/api/2024-03-01/{merchant_id}/checkout-templates".format(
-            merchant_id=merchant_id,
-        ),
+        "url": f"/api/2024-03-01/{merchant_id}/checkout-templates",
     }
 
     _body = body.to_dict()

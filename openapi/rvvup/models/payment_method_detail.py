@@ -1,16 +1,11 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.payment_method import PaymentMethod
-from typing import Union
 from ..models.payment_method_status import PaymentMethodStatus
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.payment_method_limit import PaymentMethodLimit

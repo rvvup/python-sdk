@@ -1,5 +1,6 @@
 import jwt
 import os
+
 from rvvup import RvvupClient
 
 token = os.environ["RVVUP_API_KEY"]

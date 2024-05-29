@@ -1,25 +1,20 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
+from ..models.checkout_amount_type import CheckoutAmountType
 from ..models.checkout_template_update_input_enabled_payment_methods import (
     CheckoutTemplateUpdateInputEnabledPaymentMethods,
 )
-from typing import Union
-from ..models.checkout_amount_type import CheckoutAmountType
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.checkout_payment_method_settings_update_input import (
-        CheckoutPaymentMethodSettingsUpdateInput,
-    )
     from ..models.checkout_customer_fields_update_input import (
         CheckoutCustomerFieldsUpdateInput,
+    )
+    from ..models.checkout_payment_method_settings_update_input import (
+        CheckoutPaymentMethodSettingsUpdateInput,
     )
 
 
@@ -111,11 +106,11 @@ class CheckoutTemplateUpdateInput:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.checkout_payment_method_settings_update_input import (
-            CheckoutPaymentMethodSettingsUpdateInput,
-        )
         from ..models.checkout_customer_fields_update_input import (
             CheckoutCustomerFieldsUpdateInput,
+        )
+        from ..models.checkout_payment_method_settings_update_input import (
+            CheckoutPaymentMethodSettingsUpdateInput,
         )
 
         d = src_dict.copy()

@@ -1,6 +1,9 @@
 import httpx
 import logging
 from typing import Dict, Any, Optional
+import json
+from openapi.rvvup import AuthenticatedClient
+from openapi.rvvup.api.webhooks import list_webhooks
 
 
 class RvvupClient:
@@ -25,7 +28,14 @@ class RvvupClient:
         self.logger = logger or logging.getLogger(__name__)
         self.debug = debug
 
-    def get_methods(
+        self.headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Accept": "application/json",
+            "Authorization": f"Bearer {auth_token}",
+            "User-Agent": user_agent,
+        }
+
+    def get_available_payment_methods(
         self,
         cart_total: Optional[str] = None,
         currency: Optional[str] = None,
@@ -440,6 +450,12 @@ class RvvupClient:
         response = self._do_request(query, variables)
         return response.get("data", {}).get("order", {}).get("payments", False)
 
+    def list_webhooks(self):
+        result = list_webhooks.sync_detailed(
+            self.merchant_id, client=self._rest_httpx_client()
+        )
+        return json.loads(result.content)
+
     def _do_request(
         self,
         query: str,
@@ -450,12 +466,7 @@ class RvvupClient:
         if variables:
             data["variables"] = variables
 
-        headers = {
-            "Content-Type": "application/json; charset=utf-8",
-            "Accept": "application/json",
-            "Authorization": f"Bearer {self.auth_token}",
-            "User-Agent": self.user_agent,
-        }
+        headers = self.headers.copy()
 
         if input_options and "headers" in input_options:
             headers.update(input_options.pop("headers"))
@@ -505,6 +516,14 @@ class RvvupClient:
             )
 
         raise Exception(f"Unexpected HTTP response code {debug_data}", debug_data)
+
+    def _rest_httpx_client(self) -> AuthenticatedClient:
+        c = AuthenticatedClient(
+            base_url=self.endpoint.replace("/graphql", ""),
+            token=self.auth_token,
+        )
+
+        return c
 
     def _log(self, message: str, context: Dict[str, Any]) -> None:
         if self.logger:

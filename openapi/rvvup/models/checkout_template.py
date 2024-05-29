@@ -1,19 +1,14 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
-
-from ..models.payment_method import PaymentMethod
 from dateutil.parser import isoparse
+
 from ..models.application_source import ApplicationSource
-from typing import Union
-import datetime
 from ..models.checkout_amount_type import CheckoutAmountType
+from ..models.payment_method import PaymentMethod
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.checkout_customer_fields import CheckoutCustomerFields

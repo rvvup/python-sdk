@@ -1,24 +1,19 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
+from dateutil.parser import isoparse
 
 from ..models.payment_session_status import PaymentSessionStatus
-from dateutil.parser import isoparse
-from typing import Union
-import datetime
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.customer import Customer
-    from ..models.payment import Payment
     from ..models.address import Address
-    from ..models.money import Money
+    from ..models.customer import Customer
     from ..models.item import Item
+    from ..models.money import Money
+    from ..models.payment import Payment
 
 
 T = TypeVar("T", bound="PaymentSession")
@@ -167,11 +162,11 @@ class PaymentSession:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.customer import Customer
-        from ..models.payment import Payment
         from ..models.address import Address
-        from ..models.money import Money
+        from ..models.customer import Customer
         from ..models.item import Item
+        from ..models.money import Money
+        from ..models.payment import Payment
 
         d = src_dict.copy()
         created_at = isoparse(d.pop("createdAt"))

@@ -1,26 +1,21 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
+from ..models.payment_capture_type import PaymentCaptureType
+from ..models.payment_decline_reason import PaymentDeclineReason
+from ..models.payment_method import PaymentMethod
+from ..models.payment_settlement_status import PaymentSettlementStatus
+from ..models.payment_status import PaymentStatus
+from ..models.payment_void_reason import PaymentVoidReason
 from ..types import UNSET, Unset
 
-from ..models.payment_method import PaymentMethod
-from ..models.payment_void_reason import PaymentVoidReason
-from dateutil.parser import isoparse
-from ..models.payment_decline_reason import PaymentDeclineReason
-from ..models.payment_capture_type import PaymentCaptureType
-from typing import Union
-from ..models.payment_status import PaymentStatus
-import datetime
-from ..models.payment_settlement_status import PaymentSettlementStatus
-
 if TYPE_CHECKING:
-    from ..models.payment_summary import PaymentSummary
     from ..models.money import Money
+    from ..models.payment_summary import PaymentSummary
 
 
 T = TypeVar("T", bound="Payment")
@@ -122,8 +117,8 @@ class Payment:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.payment_summary import PaymentSummary
         from ..models.money import Money
+        from ..models.payment_summary import PaymentSummary
 
         d = src_dict.copy()
         amount = Money.from_dict(d.pop("amount"))

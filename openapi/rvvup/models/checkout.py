@@ -1,24 +1,18 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
+from ..models.application_source import ApplicationSource
+from ..models.checkout_status import CheckoutStatus
 from ..types import UNSET, Unset
 
-from typing import cast
-from dateutil.parser import isoparse
-from ..models.application_source import ApplicationSource
-from typing import Union
-import datetime
-from ..models.checkout_status import CheckoutStatus
-
 if TYPE_CHECKING:
-    from ..models.customer import Customer
     from ..models.address import Address
     from ..models.checkout_metadata import CheckoutMetadata
+    from ..models.customer import Customer
     from ..models.money import Money
 
 
@@ -145,9 +139,9 @@ class Checkout:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.customer import Customer
         from ..models.address import Address
         from ..models.checkout_metadata import CheckoutMetadata
+        from ..models.customer import Customer
         from ..models.money import Money
 
         d = src_dict.copy()

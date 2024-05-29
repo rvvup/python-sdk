@@ -3,12 +3,11 @@ from typing import Any, Dict, Optional, Union, cast
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
-from ... import errors
 
+from ... import errors
+from ...client import AuthenticatedClient, Client
 from ...models.webhook_page import WebhookPage
-from ...types import Unset
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
@@ -27,9 +26,7 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "get",
-        "url": "/api/2024-03-01/{merchant_id}/webhooks".format(
-            merchant_id=merchant_id,
-        ),
+        "url": f"/api/2024-03-01/{merchant_id}/webhooks",
         "params": params,
     }
 

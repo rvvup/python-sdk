@@ -1,21 +1,16 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.application_source import ApplicationSource
 from ..types import UNSET, Unset
 
-from ..models.application_source import ApplicationSource
-from typing import Union
-
 if TYPE_CHECKING:
-    from ..models.checkout_create_input_metadata import CheckoutCreateInputMetadata
-    from ..models.money_input import MoneyInput
     from ..models.address_input import AddressInput
+    from ..models.checkout_create_input_metadata import CheckoutCreateInputMetadata
     from ..models.customer_input import CustomerInput
+    from ..models.money_input import MoneyInput
 
 
 T = TypeVar("T", bound="CheckoutCreateInput")
@@ -104,10 +99,10 @@ class CheckoutCreateInput:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.checkout_create_input_metadata import CheckoutCreateInputMetadata
-        from ..models.money_input import MoneyInput
         from ..models.address_input import AddressInput
+        from ..models.checkout_create_input_metadata import CheckoutCreateInputMetadata
         from ..models.customer_input import CustomerInput
+        from ..models.money_input import MoneyInput
 
         d = src_dict.copy()
         _amount = d.pop("amount", UNSET)

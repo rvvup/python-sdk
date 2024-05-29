@@ -1,17 +1,12 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 from ..models.statement_export_request_export_format import (
     StatementExportRequestExportFormat,
 )
-from typing import Union
+from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.start_end import StartEnd

@@ -1,15 +1,9 @@
-from typing import Any, Dict, Type, TypeVar
-
-from typing import List
-
+import datetime
+from typing import Any, Dict, List, Type, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-
-import datetime
 from dateutil.parser import isoparse
-
 
 T = TypeVar("T", bound="StartEnd")
 

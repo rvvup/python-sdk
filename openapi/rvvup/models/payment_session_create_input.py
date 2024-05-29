@@ -1,22 +1,17 @@
-from typing import Any, Dict, Type, TypeVar, TYPE_CHECKING
-
-from typing import List
-
+from typing import TYPE_CHECKING, Any, Dict, List, Type, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.payment_capture_type import PaymentCaptureType
+from ..models.payment_method import PaymentMethod
 from ..types import UNSET, Unset
 
-from ..models.payment_method import PaymentMethod
-from ..models.payment_capture_type import PaymentCaptureType
-from typing import Union
-
 if TYPE_CHECKING:
-    from ..models.item_input import ItemInput
-    from ..models.money_input import MoneyInput
     from ..models.address_input import AddressInput
     from ..models.customer_input import CustomerInput
+    from ..models.item_input import ItemInput
+    from ..models.money_input import MoneyInput
 
 
 T = TypeVar("T", bound="PaymentSessionCreateInput")
@@ -140,10 +135,10 @@ class PaymentSessionCreateInput:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
-        from ..models.item_input import ItemInput
-        from ..models.money_input import MoneyInput
         from ..models.address_input import AddressInput
         from ..models.customer_input import CustomerInput
+        from ..models.item_input import ItemInput
+        from ..models.money_input import MoneyInput
 
         d = src_dict.copy()
         payment_method = PaymentMethod(d.pop("paymentMethod"))

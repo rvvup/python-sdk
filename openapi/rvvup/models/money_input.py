@@ -1,14 +1,9 @@
-from typing import Any, Dict, Type, TypeVar
-
-from typing import List
-
+from typing import Any, Dict, List, Type, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-
 from ..models.money_input_currency import MoneyInputCurrency
-
 
 T = TypeVar("T", bound="MoneyInput")
 

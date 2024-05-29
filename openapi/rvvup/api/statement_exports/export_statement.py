@@ -3,11 +3,10 @@ from typing import Any, Dict, Optional, Union
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.statement_export_request import StatementExportRequest
+from ...types import Response
 
 
 def _get_kwargs(
@@ -19,9 +18,7 @@ def _get_kwargs(
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": "/api/2024-03-01/{merchant_id}/statements/export".format(
-            merchant_id=merchant_id,
-        ),
+        "url": f"/api/2024-03-01/{merchant_id}/statements/export",
     }
 
     _body = body.to_dict()
