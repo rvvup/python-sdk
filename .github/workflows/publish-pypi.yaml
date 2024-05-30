@@ -1,0 +1,38 @@
+name: Publish Python Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.in-project true
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - run: poetry run pytest
+
+      - run: poetry config pypi-token.pypi "${{ secrets.PYPI_API_KEY }}"
+
+      - name: Publish package
+        run: poetry publish --build
+
