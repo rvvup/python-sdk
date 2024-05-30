@@ -2,6 +2,7 @@ import logging
 from typing import Dict, Any, Optional
 
 import httpx
+import jwt
 
 from openapi.rvvup import AuthenticatedClient
 from .checkout_templates import CheckoutTemplates
@@ -16,20 +17,26 @@ class RvvupClient:
 
     def __init__(
         self,
-        endpoint: str,
-        merchant_id: str,
         auth_token: str,
         user_agent: str,
+        endpoint: str = None,
+        merchant_id: str = None,
         logger: Optional[logging.Logger] = None,
         debug: bool = False,
     ):
-        if not merchant_id or not auth_token or not endpoint:
-            raise ValueError("Unable to initialize SDK, missing init parameters")
+        if not auth_token:
+            raise ValueError("Unable to initialize SDK, missing JWT parameters")
 
-        self.endpoint = endpoint
-        self.merchant_id = merchant_id
         self.auth_token = auth_token
         self.user_agent = user_agent
+
+        payload = jwt.decode(auth_token, options={"verify_signature": False})
+
+        # allow overrides but prefer payload
+        self.endpoint = endpoint if endpoint is not None else payload.get("aud")
+        self.merchant_id = (
+            merchant_id if merchant_id is not None else payload.get("merchantId")
+        )
 
         self.orders = Orders(self)
         self.webhooks = Webhooks(self)
