@@ -4,7 +4,7 @@ from typing import Dict, Any, Optional
 import httpx
 
 from openapi.rvvup import AuthenticatedClient
-
+from .checkout_templates import CheckoutTemplates
 from .events import Events
 from .orders import Orders
 from .payment_methods import PaymentMethods
@@ -35,16 +35,10 @@ class RvvupClient:
         self.webhooks = Webhooks(self)
         self.events = Events(self)
         self.payment_methods = PaymentMethods(self)
+        self.checkout_templates = CheckoutTemplates(self)
 
         self.logger = logger or logging.getLogger(__name__)
         self.debug = debug
-
-        self.headers = {
-            "Content-Type": "application/json; charset=utf-8",
-            "Accept": "application/json",
-            "Authorization": f"Bearer {auth_token}",
-            "User-Agent": user_agent,
-        }
 
     def ping(self) -> str:
         query = """
@@ -67,7 +61,12 @@ class RvvupClient:
         if variables:
             data["variables"] = variables
 
-        headers = self.headers.copy()
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Accept": "application/json",
+            "Authorization": f"Bearer {self.auth_token}",
+            "User-Agent": self.user_agent,
+        }
 
         if input_options and "headers" in input_options:
             headers.update(input_options.pop("headers"))
