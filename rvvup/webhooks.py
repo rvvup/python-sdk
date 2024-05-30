@@ -1,7 +1,12 @@
 import json
 from typing import Dict, Any
 
-from openapi.rvvup.api.webhooks import list_webhooks, create_webhook, update_webhook
+from openapi.rvvup.api.webhooks import (
+    list_webhooks,
+    create_webhook,
+    update_webhook,
+    get_webhook,
+)
 from openapi.rvvup.models import (
     WebhookCreateInput,
     WebhookUpdateInput,
@@ -15,14 +20,20 @@ class Webhooks:
     def __init__(self, client):
         self.client = client
 
-    def list_webhooks(self):
+    def find(self):
         result = list_webhooks.sync_detailed(
             self.client.merchant_id, client=self.client.httpx_client()
         )
         return json.loads(result.content)
 
-    def create_webhook(
-        self, url: str, subscribed_events: list[str], headers=None
+    def get(self, webhook_id: str):
+        result = get_webhook.sync_detailed(
+            self.client.merchant_id, webhook_id, client=self.client.httpx_client()
+        )
+        return json.loads(result.content)
+
+    def create(
+        self, url: str, subscribed_events: list[WebhookEventType], headers=None
     ) -> Dict[str, Any]:
 
         if headers is None:
@@ -40,7 +51,7 @@ class Webhooks:
         )
         return json.loads(result.content)
 
-    def update_webhook(
+    def update(
         self,
         webhook_id: str,
         url: str,
