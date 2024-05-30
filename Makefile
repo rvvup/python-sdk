@@ -10,3 +10,6 @@ generate-openapi:
 ping:
 	poetry run python3 ping.py
 
+tag:
+	git tag $(poetry version -s)
+	git push origin --tags

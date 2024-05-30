@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "rvvup_python"
-version = "0.1.0"
+version = "0.1.2"
 description = "Rvvup Python API Client"
-authors = ["Graham O'regan <graham@rvvup.com>"]
+authors = ["Rvvup Open Source <opensource@rvvup.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "rvvup"}]
@@ -20,6 +20,7 @@ black = "^24.4.2"
 flake8 = "^7.0.0"
 pre-commit = "^3.7.1"
 openapi-python-client = "^0.20.0"
+pytest = "^8.2.1"
 
 [build-system]
 requires = ["poetry-core"]
