@@ -8,7 +8,7 @@ class PaymentMethods:
 
     def get_available_payment_methods(
         self,
-        cart_total: Optional[str] = None,
+        amount: Optional[str] = None,
         currency: Optional[str] = None,
         input_options: Optional[Dict[str, Any]] = None,
     ) -> List[Dict[str, Any]]:
@@ -140,9 +140,9 @@ class PaymentMethods:
             """
 
         total = None
-        if cart_total and currency:
+        if amount and currency:
             total = {
-                "amount": cart_total,
+                "amount": amount,
                 "currency": currency,
             }
 
