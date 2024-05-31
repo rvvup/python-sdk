@@ -7,10 +7,12 @@ import jwt
 from openapi_client import Configuration, ApiClient
 
 from .checkout_templates import CheckoutTemplates
+from .checkouts import Checkouts
 from .events import Events
 from .orders import Orders
 from .payment_methods import PaymentMethods
 from .webhooks import Webhooks
+import os
 
 
 class RvvupClient:
@@ -18,15 +20,20 @@ class RvvupClient:
 
     def __init__(
         self,
-        auth_token: str,
-        user_agent: str,
+        auth_token: str = None,
+        user_agent: str = "rvvup-python-sdk/0.1.0",
         endpoint: str = None,
         merchant_id: str = None,
         logger: Optional[logging.Logger] = None,
         debug: bool = False,
     ):
         if not auth_token:
-            raise ValueError("Unable to initialize SDK, missing JWT parameters")
+            token = os.environ["RVVUP_API_KEY"]
+
+            if token is not None and len(token) > 0:
+                auth_token = token
+            else:
+                raise ValueError("Unable to initialize SDK, missing JWT")
 
         self.auth_token = auth_token
         self.user_agent = user_agent
@@ -44,6 +51,7 @@ class RvvupClient:
         self.events = Events(self)
         self.payment_methods = PaymentMethods(self)
         self.checkout_templates = CheckoutTemplates(self)
+        self.checkouts = Checkouts(self)
 
         self.logger = logger or logging.getLogger(__name__)
         self.debug = debug
