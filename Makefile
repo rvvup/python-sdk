@@ -13,3 +13,9 @@ ping:
 tag:
 	git tag $(poetry version -s)
 	git push origin --tags
+
+gen-2:
+	docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
+        -i /local/openapi/openapi.yaml \
+        -g python \
+        -o /local/out

@@ -4,7 +4,8 @@ from typing import Dict, Any, Optional
 import httpx
 import jwt
 
-from openapi.rvvup import AuthenticatedClient
+from openapi_client import Configuration, ApiClient
+
 from .checkout_templates import CheckoutTemplates
 from .events import Events
 from .orders import Orders
@@ -57,6 +58,16 @@ class RvvupClient:
         """
         response = self.graphql(query)
         return f"{response['data']['ping']['pong']}"
+
+    def api_client(self):
+
+        configuration = Configuration(
+            access_token=self.auth_token,
+            host=self.endpoint.replace("/graphql", ""),
+        )
+
+        api_client = ApiClient(configuration)
+        return api_client
 
     def graphql(
         self,
@@ -123,14 +134,6 @@ class RvvupClient:
             )
 
         raise Exception(f"Unexpected HTTP response code {debug_data}", debug_data)
-
-    def httpx_client(self) -> AuthenticatedClient:
-        c = AuthenticatedClient(
-            base_url=self.endpoint.replace("/graphql", ""),
-            token=self.auth_token,
-        )
-
-        return c
 
     def log(self, message: str, context: Dict[str, Any]) -> None:
         if self.logger:

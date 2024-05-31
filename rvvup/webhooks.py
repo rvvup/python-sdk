@@ -1,55 +1,45 @@
-import json
+from pprint import pprint
 from typing import Dict, Any
 
-from openapi.rvvup.api.webhooks import (
-    list_webhooks,
-    create_webhook,
-    update_webhook,
-    get_webhook,
-)
-from openapi.rvvup.models import (
-    WebhookCreateInput,
-    WebhookUpdateInput,
-    WebhookEventType,
-    WebhookStatus,
-)
+from openapi_client.api.webhooks_api import WebhooksApi
+from openapi_client.models.webhook import Webhook
+from openapi_client.models.webhook_create_input import WebhookCreateInput
+from openapi_client.models.webhook_event_type import WebhookEventType
+from openapi_client.models.webhook_status import WebhookStatus
+from openapi_client.models.webhook_update_input import WebhookUpdateInput
 
 
 class Webhooks:
 
     def __init__(self, client):
         self.client = client
+        self.api = WebhooksApi(self.client.api_client())
 
     def find(self):
-        result = list_webhooks.sync_detailed(
-            self.client.merchant_id, client=self.client.httpx_client()
-        )
-        return json.loads(result.content)
+        page = self.api.list_webhooks(self.client.merchant_id)
+        return page.results
 
     def get(self, webhook_id: str):
-        result = get_webhook.sync_detailed(
-            self.client.merchant_id, webhook_id, client=self.client.httpx_client()
-        )
-        return json.loads(result.content)
+        result = self.api.get_webhook(self.client.merchant_id, webhook_id)
+        pprint(result)
+        return result
 
     def create(
         self, url: str, subscribed_events: list[WebhookEventType], headers=None
-    ) -> Dict[str, Any]:
-
-        if headers is None:
-            headers = {}
-
+    ) -> Webhook:
         webhook = WebhookCreateInput(
-            headers=headers,
-            subscribed_events=subscribed_events,
             url=url,
+            subscribed_events=subscribed_events,
+            status=WebhookStatus.ENABLED,
+            headers={},
         )
-        result = create_webhook.sync_detailed(
+
+        result = self.api.create_webhook(
             self.client.merchant_id,
-            client=self.client.httpx_client(),
-            body=webhook,
+            webhook,
         )
-        return json.loads(result.content)
+
+        return result
 
     def update(
         self,
@@ -59,21 +49,18 @@ class Webhooks:
         status: WebhookStatus,
         headers=None,
     ) -> Dict[str, Any]:
-
         if headers is None:
             headers = {}
 
         webhook = WebhookUpdateInput(
             url=url,
-            headers=headers,
             subscribed_events=subscribed_events,
             status=status,
         )
 
-        result = update_webhook.sync_detailed(
+        result = self.api.update_webhook(
             self.client.merchant_id,
             webhook_id,
-            client=self.client.httpx_client(),
-            body=webhook,
+            webhook,
         )
-        return json.loads(result.content)
+        return result
