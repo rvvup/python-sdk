@@ -10,6 +10,7 @@ from .checkout_templates import CheckoutTemplates
 from .checkouts import Checkouts
 from .events import Events
 from .orders import Orders
+from .payment_links import PaymentLinks
 from .payment_methods import PaymentMethods
 from .webhooks import Webhooks
 import os
@@ -52,6 +53,7 @@ class RvvupClient:
         self.payment_methods = PaymentMethods(self)
         self.checkout_templates = CheckoutTemplates(self)
         self.checkouts = Checkouts(self)
+        self.payment_links = PaymentLinks(self)
 
         self.logger = logger or logging.getLogger(__name__)
         self.debug = debug
