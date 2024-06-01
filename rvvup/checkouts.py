@@ -17,7 +17,7 @@ class Checkouts:
 
     def find(self):
         page = self.api.list_checkouts(self.client.merchant_id)
-        return page
+        return page.results
 
     def get(self, checkout_id):
         result = self.api.get_checkout(checkout_id, self.client.merchant_id)
