@@ -27,5 +27,8 @@ class PaymentLinks:
         result = self.api.get_payment_link(payment_link_id, self.client.merchant_id)
         return result
 
-    def update(self) -> PaymentLink:
-        pass
+    def deactivate(self, payment_link_id: str) -> PaymentLink:
+        result = self.api.deactivate_payment_link(
+            payment_link_id, self.client.merchant_id
+        )
+        return result
