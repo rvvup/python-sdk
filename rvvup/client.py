@@ -1,9 +1,9 @@
 import logging
+import os
 from typing import Dict, Any, Optional
 
 import httpx
 import jwt
-
 from openapi_client import Configuration, ApiClient
 
 from .checkout_templates import CheckoutTemplates
@@ -12,9 +12,9 @@ from .events import Events
 from .orders import Orders
 from .payment_links import PaymentLinks
 from .payment_methods import PaymentMethods
+from .payment_sessions import PaymentSessions
 from .statements import Statements
 from .webhooks import Webhooks
-import os
 
 
 class RvvupClient:
@@ -55,6 +55,7 @@ class RvvupClient:
         self.checkout_templates = CheckoutTemplates(self)
         self.checkouts = Checkouts(self)
         self.payment_links = PaymentLinks(self)
+        self.payment_sessions = PaymentSessions(self)
         self.statements = Statements(self)
 
         self.logger = logger or logging.getLogger(__name__)
